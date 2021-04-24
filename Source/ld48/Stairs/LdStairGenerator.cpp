@@ -58,7 +58,7 @@ void ALdStairGenerator::GenerateStep(TCHAR currChar)
 		break;
 	}
 
-	CurrentHeight += StepHeight;
+	CurrentHeight -= StepHeight;
 	CurrentRotation += 360.f/NumStepsPer360;
 
 }
