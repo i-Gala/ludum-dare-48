@@ -87,9 +87,9 @@ void ALdStairGenerator::GenerateStep(TCHAR currChar)
 			if (o)
 			{
 				FActorSpawnParameters spawnParams;
-				FRotator rot = FRotator(0, CurrentRotation+90, 0);
+				FRotator rot = FRotator(0, CurrentRotation, 0);
 
-				AActor* step = GetWorld()->SpawnActor<AActor>(*o, FVector(0, 0, 0) + rot.Vector()* 600, rot, spawnParams);
+				AActor* obstacle = GetWorld()->SpawnActor<AActor>(*o, FVector(0, 0, CurrentHeight + StepHeight/2) + rot.Vector()* 600, rot, spawnParams);
 			}
 			break;
 		}
