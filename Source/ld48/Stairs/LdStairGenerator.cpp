@@ -76,7 +76,7 @@ void ALdStairGenerator::GenerateStep(TCHAR currChar)
 			if (o) AddStep(*o);
 		}
 	case 'H':
-		AddStep();
+		AddStep(false);
 		Steps.Last()->SetActorHiddenInGame(true);
 		Steps.Last()->SetActorEnableCollision(false);
 		break;
@@ -100,7 +100,7 @@ void ALdStairGenerator::GenerateStep(TCHAR currChar)
 
 }
 
-void ALdStairGenerator::AddStep(UClass* Class)
+void ALdStairGenerator::AddStep(bool GenerateDecoration, UClass* Class)
 {
 	FActorSpawnParameters spawnParams;
 	AStaticMeshActor* step = GetWorld()->SpawnActor<AStaticMeshActor>(Class, FVector(0, 0, CurrentHeight), FRotator(0, CurrentRotation - 90, 0), spawnParams);
@@ -123,6 +123,8 @@ void ALdStairGenerator::AddStep(UClass* Class)
 			break;
 		}
 	}
+
+	if (!GenerateDecoration) return;
 
 	float decon = FMath::FRandRange(0, 1);
 
