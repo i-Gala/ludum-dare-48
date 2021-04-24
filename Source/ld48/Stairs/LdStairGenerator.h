@@ -4,6 +4,8 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
+#include "../ObstacleActor.h"
+#include "Engine/StaticMeshActor.h"
 #include "LdStairGenerator.generated.h"
 
 UCLASS()
@@ -31,15 +33,16 @@ public:
 	float NumStepsPer360 = 12;
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	float MaxSteps = 64;
-
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	UStaticMesh* StepMesh;
-
+	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+	TMap<FName, TSubclassOf<AObstacleActor>> Obstacles;
 private:
 	void GenerateSteps();
 	void GenerateStep(TCHAR type);
+	void AddStep(UClass* Class = AStaticMeshActor::StaticClass());
 
-	TArray<class AStaticMeshActor*> Steps;
+	TArray<AStaticMeshActor*> Steps;
 	float CurrentHeight = 0;
 	float CurrentRotation = 0;
 };

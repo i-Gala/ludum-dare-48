@@ -1,7 +1,6 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "LdStairGenerator.h"
-#include "Engine/StaticMeshActor.h"
 
 // Sets default values
 ALdStairGenerator::ALdStairGenerator()
@@ -47,19 +46,40 @@ void ALdStairGenerator::GenerateStep(TCHAR currChar)
 	switch (currChar)
 	{
 	case 'S':
+		AddStep();
+		break;
+	case 'T':
 		{
-			FActorSpawnParameters spawnParams;
-			AStaticMeshActor* step = GetWorld()->SpawnActor<AStaticMeshActor>(AStaticMeshActor::StaticClass(), FVector(0, 0, CurrentHeight), FRotator(0, CurrentRotation, 0), spawnParams);
-			step->GetStaticMeshComponent()->SetStaticMesh(StepMesh);
-			Steps.Add(step);
-			break;
+			auto o = Obstacles.Find("T");
+			if (o) AddStep(*o);
 		}
 	case 'H':
 		break;
+	default:
+		{
+			AddStep();
+			auto o = Obstacles.Find(FName(&currChar));
+			if (o)
+			{
+				FActorSpawnParameters spawnParams;
+				FRotator rot = FRotator(0, CurrentRotation, 0);
+
+				AActor* step = GetWorld()->SpawnActor<AActor>(*o, FVector(0, 0, CurrentHeight) + rot.Vector()* 600, rot, spawnParams);
+			}
+			break;
+		}
 	}
 
 	CurrentHeight -= StepHeight;
 	CurrentRotation += 360.f/NumStepsPer360;
 
+}
+
+void ALdStairGenerator::AddStep(UClass* Class)
+{
+	FActorSpawnParameters spawnParams;
+	AStaticMeshActor* step = GetWorld()->SpawnActor<AStaticMeshActor>(Class, FVector(0, 0, CurrentHeight), FRotator(0, CurrentRotation, 0), spawnParams);
+	step->GetStaticMeshComponent()->SetStaticMesh(StepMesh);
+	Steps.Add(step);
 }
 
