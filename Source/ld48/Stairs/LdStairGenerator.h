@@ -38,7 +38,15 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	TMap<UStaticMesh*, float> WallMeshes;
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+	TMap<UStaticMesh*, float> DecoMeshes;
+	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	TMap<FName, TSubclassOf<AObstacleActor>> Obstacles;
+	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+	class ACameraActor* Camera;
+	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+	AActor* Plane;
+	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+	float FloorDistanceToDestroy = 1000;
 private:
 	void GenerateSteps();
 	void GenerateStep(TCHAR type);
