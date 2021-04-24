@@ -36,7 +36,7 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	UStaticMesh* StepMesh;
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
-	UStaticMesh* WallMesh;
+	TMap<UStaticMesh*, float> WallMeshes;
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	TMap<FName, TSubclassOf<AObstacleActor>> Obstacles;
 private:
