@@ -17,6 +17,8 @@ public:
 	// Sets default values for this actor's properties
 	ALdStairGenerator();
 
+	UFUNCTION(BlueprintCallable)
+	void Start();
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -50,11 +52,13 @@ public:
 
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere)
 	float CurrentHeight = 0;
+
 private:
 	void GenerateSteps();
 	void GenerateStep(TCHAR type);
-	void AddStep(UClass* Class = AStaticMeshActor::StaticClass());
+	void AddStep(bool generateDecoration = true, UClass* Class = AStaticMeshActor::StaticClass());
 
 	TArray<AStaticMeshActor*> Steps;
 	float CurrentRotation = 0;
+
 };

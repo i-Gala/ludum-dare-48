@@ -11,12 +11,15 @@ ALdStairGenerator::ALdStairGenerator()
 
 }
 
+void ALdStairGenerator::Start()
+{
+	GenerateSteps();
+}
+
 // Called when the game starts or when spawned
 void ALdStairGenerator::BeginPlay()
 {
 	Super::BeginPlay();
-	
-	GenerateSteps();
 }
 
 
@@ -73,6 +76,9 @@ void ALdStairGenerator::GenerateStep(TCHAR currChar)
 			if (o) AddStep(*o);
 		}
 	case 'H':
+		AddStep(false);
+		Steps.Last()->SetActorHiddenInGame(true);
+		Steps.Last()->SetActorEnableCollision(false);
 		break;
 	default:
 		{
@@ -94,7 +100,7 @@ void ALdStairGenerator::GenerateStep(TCHAR currChar)
 
 }
 
-void ALdStairGenerator::AddStep(UClass* Class)
+void ALdStairGenerator::AddStep(bool GenerateDecoration, UClass* Class)
 {
 	FActorSpawnParameters spawnParams;
 	AStaticMeshActor* step = GetWorld()->SpawnActor<AStaticMeshActor>(Class, FVector(0, 0, CurrentHeight), FRotator(0, CurrentRotation - 90, 0), spawnParams);
@@ -110,13 +116,15 @@ void ALdStairGenerator::AddStep(UClass* Class)
 		acc += m.Value;
 		if (walln < acc)
 		{
-			AStaticMeshActor* wall = GetWorld()->SpawnActor<AStaticMeshActor>(Class, FVector(0, 0, 490*3), FRotator(0, 0, 0), spawnParams);
+			AStaticMeshActor* wall = GetWorld()->SpawnActor<AStaticMeshActor>(Class, FVector(0, 0, 970 * 2), FRotator(0, 0, 0), spawnParams);
 			wall->SetMobility(EComponentMobility::Movable);
 			wall->GetStaticMeshComponent()->SetStaticMesh(m.Key);
 			wall->AttachToActor(step, FAttachmentTransformRules(EAttachmentRule::KeepRelative, true));
 			break;
 		}
 	}
+
+	if (!GenerateDecoration) return;
 
 	float decon = FMath::FRandRange(0, 1);
 
