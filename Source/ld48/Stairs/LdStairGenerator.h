@@ -47,12 +47,14 @@ public:
 	AActor* Plane;
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	float FloorDistanceToDestroy = 1000;
+
+	UPROPERTY(BlueprintReadOnly, VisibleAnywhere)
+	float CurrentHeight = 0;
 private:
 	void GenerateSteps();
 	void GenerateStep(TCHAR type);
 	void AddStep(UClass* Class = AStaticMeshActor::StaticClass());
 
 	TArray<AStaticMeshActor*> Steps;
-	float CurrentHeight = 0;
 	float CurrentRotation = 0;
 };

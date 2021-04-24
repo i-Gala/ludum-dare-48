@@ -26,7 +26,6 @@ void ALdStairGenerator::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 	if (!Camera) return;
 	float dist = FVector::Distance(Steps[0]->GetActorLocation(), Camera->GetActorLocation());
-	GEngine->AddOnScreenDebugMessage(-1, 0.1, FColor::Red, FString::SanitizeFloat(dist));
 
 	if (dist < 1000)
 	{
