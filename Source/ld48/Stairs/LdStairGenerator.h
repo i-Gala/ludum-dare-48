@@ -56,7 +56,7 @@ public:
 private:
 	void GenerateSteps();
 	void GenerateStep(TCHAR type);
-	void AddStep(UClass* Class = AStaticMeshActor::StaticClass());
+	void AddStep(bool generateDecoration = true, UClass* Class = AStaticMeshActor::StaticClass());
 
 	TArray<AStaticMeshActor*> Steps;
 	float CurrentRotation = 0;
