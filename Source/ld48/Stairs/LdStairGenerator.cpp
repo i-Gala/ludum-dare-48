@@ -11,12 +11,15 @@ ALdStairGenerator::ALdStairGenerator()
 
 }
 
+void ALdStairGenerator::Start()
+{
+	GenerateSteps();
+}
+
 // Called when the game starts or when spawned
 void ALdStairGenerator::BeginPlay()
 {
 	Super::BeginPlay();
-	
-	GenerateSteps();
 }
 
 
@@ -24,6 +27,7 @@ void ALdStairGenerator::BeginPlay()
 void ALdStairGenerator::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+	if (!Started) return;
 	if (!Camera) return;
 	float dist = FVector::Distance(Steps[0]->GetActorLocation(), Camera->GetActorLocation());
 
@@ -73,6 +77,9 @@ void ALdStairGenerator::GenerateStep(TCHAR currChar)
 			if (o) AddStep(*o);
 		}
 	case 'H':
+		AddStep();
+		Steps.Last()->SetActorHiddenInGame(true);
+		Steps.Last()->SetActorEnableCollision(false);
 		break;
 	default:
 		{
@@ -110,7 +117,7 @@ void ALdStairGenerator::AddStep(UClass* Class)
 		acc += m.Value;
 		if (walln < acc)
 		{
-			AStaticMeshActor* wall = GetWorld()->SpawnActor<AStaticMeshActor>(Class, FVector(0, 0, 490*3), FRotator(0, 0, 0), spawnParams);
+			AStaticMeshActor* wall = GetWorld()->SpawnActor<AStaticMeshActor>(Class, FVector(0, 0, 970 * 2), FRotator(0, 0, 0), spawnParams);
 			wall->SetMobility(EComponentMobility::Movable);
 			wall->GetStaticMeshComponent()->SetStaticMesh(m.Key);
 			wall->AttachToActor(step, FAttachmentTransformRules(EAttachmentRule::KeepRelative, true));
