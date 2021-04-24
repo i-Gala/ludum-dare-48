@@ -27,7 +27,6 @@ void ALdStairGenerator::BeginPlay()
 void ALdStairGenerator::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-	if (!Started) return;
 	if (!Camera) return;
 	float dist = FVector::Distance(Steps[0]->GetActorLocation(), Camera->GetActorLocation());
 
