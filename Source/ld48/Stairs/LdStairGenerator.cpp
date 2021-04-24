@@ -75,6 +75,7 @@ void ALdStairGenerator::GenerateStep(TCHAR currChar)
 			auto o = Obstacles.Find("T");
 			if (o) AddStep(*o);
 		}
+		break;
 	case 'H':
 		AddStep(false);
 		Steps.Last()->SetActorHiddenInGame(true);
