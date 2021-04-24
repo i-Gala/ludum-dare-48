@@ -1,6 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "LdStairGenerator.h"
+#include "Camera/CameraActor.h"
 
 // Sets default values
 ALdStairGenerator::ALdStairGenerator()
@@ -23,6 +24,25 @@ void ALdStairGenerator::BeginPlay()
 void ALdStairGenerator::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+	if (!Camera) return;
+	float dist = FVector::Distance(Steps[0]->GetActorLocation(), Camera->GetActorLocation());
+	GEngine->AddOnScreenDebugMessage(-1, 0.1, FColor::Red, FString::SanitizeFloat(dist));
+
+	if (dist < 1000)
+	{
+		TArray<AActor*> attached;
+		Steps[0]->GetAttachedActors(attached, true);
+		for (auto c : attached)
+			c->Destroy();
+
+		Steps[0]->Destroy();
+		Steps.RemoveAt(0);
+
+		GenerateSteps();
+
+		if(Plane)
+			Plane->SetActorLocation(FVector(0, 0, CurrentHeight));
+	}
 
 }
 
@@ -79,20 +99,38 @@ void ALdStairGenerator::AddStep(UClass* Class)
 {
 	FActorSpawnParameters spawnParams;
 	AStaticMeshActor* step = GetWorld()->SpawnActor<AStaticMeshActor>(Class, FVector(0, 0, CurrentHeight), FRotator(0, CurrentRotation - 90, 0), spawnParams);
+	step->SetMobility(EComponentMobility::Movable);
 	step->GetStaticMeshComponent()->SetStaticMesh(StepMesh);
 	Steps.Add(step);
 
-	float mesh = FMath::FRandRange(0, 1);
+	float walln = FMath::FRandRange(0, 1);
 
 	float acc = 0;
 	for (auto m : WallMeshes)
 	{
 		acc += m.Value;
-		if (mesh < acc)
+		if (walln < acc)
 		{
-			AStaticMeshActor* wall = GetWorld()->SpawnActor<AStaticMeshActor>(Class, FVector(0, 0, CurrentHeight), FRotator(0, 0, 0), spawnParams);
+			AStaticMeshActor* wall = GetWorld()->SpawnActor<AStaticMeshActor>(Class, FVector(0, 0, 490*3), FRotator(0, 0, 0), spawnParams);
+			wall->SetMobility(EComponentMobility::Movable);
 			wall->GetStaticMeshComponent()->SetStaticMesh(m.Key);
-			wall->AttachToActor(step, FAttachmentTransformRules(EAttachmentRule::SnapToTarget, true));
+			wall->AttachToActor(step, FAttachmentTransformRules(EAttachmentRule::KeepRelative, true));
+			break;
+		}
+	}
+
+	float decon = FMath::FRandRange(0, 1);
+
+	acc = 0;
+	for (auto m : DecoMeshes)
+	{
+		acc += m.Value;
+		if (decon < acc)
+		{
+			AStaticMeshActor* deco = GetWorld()->SpawnActor<AStaticMeshActor>(Class, FVector(0, 0, CurrentHeight), FRotator(0, 0, 0), spawnParams);
+			deco->SetMobility(EComponentMobility::Movable);
+			deco->GetStaticMeshComponent()->SetStaticMesh(m.Key);
+			deco->AttachToActor(step, FAttachmentTransformRules(EAttachmentRule::SnapToTarget, true));
 			break;
 		}
 	}
