@@ -62,9 +62,9 @@ void ALdStairGenerator::GenerateStep(TCHAR currChar)
 			if (o)
 			{
 				FActorSpawnParameters spawnParams;
-				FRotator rot = FRotator(0, CurrentRotation, 0);
+				FRotator rot = FRotator(0, CurrentRotation+90, 0);
 
-				AActor* step = GetWorld()->SpawnActor<AActor>(*o, FVector(0, 0, CurrentHeight) + rot.Vector()* 600, rot, spawnParams);
+				AActor* step = GetWorld()->SpawnActor<AActor>(*o, FVector(0, 0, 0) + rot.Vector()* 600, rot, spawnParams);
 			}
 			break;
 		}
@@ -78,8 +78,14 @@ void ALdStairGenerator::GenerateStep(TCHAR currChar)
 void ALdStairGenerator::AddStep(UClass* Class)
 {
 	FActorSpawnParameters spawnParams;
-	AStaticMeshActor* step = GetWorld()->SpawnActor<AStaticMeshActor>(Class, FVector(0, 0, CurrentHeight), FRotator(0, CurrentRotation, 0), spawnParams);
+	AStaticMeshActor* step = GetWorld()->SpawnActor<AStaticMeshActor>(Class, FVector(0, 0, CurrentHeight), FRotator(0, CurrentRotation - 90, 0), spawnParams);
 	step->GetStaticMeshComponent()->SetStaticMesh(StepMesh);
+
+	AStaticMeshActor* wall = GetWorld()->SpawnActor<AStaticMeshActor>(Class, FVector(0, 0, CurrentHeight), FRotator(0, 0, 0), spawnParams);
+	wall->GetStaticMeshComponent()->SetStaticMesh(WallMesh);
+
 	Steps.Add(step);
+
+	wall->AttachToActor(step, FAttachmentTransformRules(EAttachmentRule::SnapToTarget, true));
 }
 
