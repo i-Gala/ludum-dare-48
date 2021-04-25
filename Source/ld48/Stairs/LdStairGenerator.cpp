@@ -76,7 +76,7 @@ void ALdStairGenerator::GenerateStep(TCHAR currChar)
 		{
 			if (Obstacles.Find("T"))
 			{
-				AddStep(*Obstacles.Find("T"));
+				AddStep(true, *Obstacles.Find("T"));
 			}
 		}
 		break;
