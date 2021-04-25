@@ -81,61 +81,44 @@ void ALdStairGenerator::GenerateModule(FString Module)
 	for (int32 i = 0; i < Module.Len(); i++)
 	{
 		FString currChar = Module.Mid(i, 1);
-		GenerateStep(currChar[0]);
+		GenerateStep(currChar);
 	}
 }
 
 
-void ALdStairGenerator::GenerateStep(TCHAR currChar)
+void ALdStairGenerator::GenerateStep(FString key)
 {
-	switch (currChar)
+
+	if (key.Equals("S"))
 	{
-	case 'S':
 		AddStep(StepMesh);
-		break;
-	case 'T':
-		{
-			const auto obstacleClass = Obstacles.Find("T");
-			if (obstacleClass)
-			{
-				AddStep(EmptyStepMesh, true); 
-				FActorSpawnParameters spawnParams;
-				FVector loc = Steps.Last()->GetActorLocation();
-				FRotator rot = Steps.Last()->GetActorRotation();
-				AActor* obstacle = GetWorld()->SpawnActor<AActor>(*obstacleClass, loc, rot, spawnParams);
-			}
-		}
-		break;
-	case 'K':
+	}
+	else if (key.Equals("T") || key.Equals("K"))
 	{
-		const auto obstacleClass = Obstacles.Find("K");
+		const auto obstacleClass = Obstacles.Find(FName(key));
 		if (obstacleClass)
 		{
 			AddStep(EmptyStepMesh, true);
-			Steps.Last()->SetActorHiddenInGame(true);
-
 			FActorSpawnParameters spawnParams;
 			FVector loc = Steps.Last()->GetActorLocation();
 			FRotator rot = Steps.Last()->GetActorRotation();
 			AActor* obstacle = GetWorld()->SpawnActor<AActor>(*obstacleClass, loc, rot, spawnParams);
 		}
-		break;
 	}
-	case 'H':
-		AddStep(EmptyStepMesh, false);
-		break;
-	default:
+	else if(key.Equals("H"))
+	{
+		AddStep(EmptyStepMesh);
+	}
+	else
+	{
+		AddStep(StepMesh);
+		const auto obstacleClass = Obstacles.Find(FName(key));
+		if (obstacleClass)
 		{
-			AddStep(StepMesh);
-			const auto obstacleClass = Obstacles.Find(FName(&currChar));
-			if (obstacleClass)
-			{
-				FActorSpawnParameters spawnParams;
-				FRotator rot = FRotator(0, CurrentRotation, 0);
+			FActorSpawnParameters spawnParams;
+			FRotator rot = FRotator(0, CurrentRotation, 0);
 
-				AActor* obstacle = GetWorld()->SpawnActor<AActor>(*obstacleClass, FVector(0, 0, CurrentHeight + StepHeight/2) + rot.Vector()* 600, rot, spawnParams);
-			}
-			break;
+			AActor* obstacle = GetWorld()->SpawnActor<AActor>(*obstacleClass, FVector(0, 0, CurrentHeight + StepHeight / 2) + rot.Vector() * 600, rot, spawnParams);
 		}
 	}
 
