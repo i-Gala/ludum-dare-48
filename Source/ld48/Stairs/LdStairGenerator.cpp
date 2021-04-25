@@ -13,6 +13,7 @@ ALdStairGenerator::ALdStairGenerator()
 
 void ALdStairGenerator::Start()
 {
+	GenerateModule(FirstModule);
 	GenerateSteps();
 }
 
@@ -55,15 +56,19 @@ void ALdStairGenerator::GenerateSteps()
 	while (Steps.Num() < MaxSteps)
 	{
 		int module = FMath::RandRange(0, StepModules.Num() - 1);
-		FString moduleString = StepModules[module];
-		for (int32 i = 0; i < moduleString.Len(); i++)
-		{
-			FString currChar = moduleString.Mid(i, 1);
-
-			GenerateStep(currChar[0]);
-		}
+		GenerateModule(StepModules[module]);
 	}
 }
+
+void ALdStairGenerator::GenerateModule(FString Module)
+{
+	for (int32 i = 0; i < Module.Len(); i++)
+	{
+		FString currChar = Module.Mid(i, 1);
+		GenerateStep(currChar[0]);
+	}
+}
+
 
 void ALdStairGenerator::GenerateStep(TCHAR currChar)
 {
