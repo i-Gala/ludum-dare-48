@@ -74,8 +74,10 @@ void ALdStairGenerator::GenerateStep(TCHAR currChar)
 		break;
 	case 'T':
 		{
-			auto o = Obstacles.Find("T");
-			if (o) AddStep(*o);
+			if (Obstacles.Find("T"))
+			{
+				AddStep(*Obstacles.Find("T"));
+			}
 		}
 		break;
 	case 'H':
@@ -86,13 +88,12 @@ void ALdStairGenerator::GenerateStep(TCHAR currChar)
 	default:
 		{
 			AddStep();
-			auto o = Obstacles.Find(FName(&currChar));
-			if (o)
+			if (Obstacles.Find(FName(&currChar)))
 			{
 				FActorSpawnParameters spawnParams;
 				FRotator rot = FRotator(0, CurrentRotation, 0);
 
-				AActor* obstacle = GetWorld()->SpawnActor<AActor>(*o, FVector(0, 0, CurrentHeight + StepHeight/2) + rot.Vector()* 600, rot, spawnParams);
+				AActor* obstacle = GetWorld()->SpawnActor<AActor>(*Obstacles.Find(FName(&currChar)), FVector(0, 0, CurrentHeight + StepHeight/2) + rot.Vector()* 600, rot, spawnParams);
 			}
 			break;
 		}
