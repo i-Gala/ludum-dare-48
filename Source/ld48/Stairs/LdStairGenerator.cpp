@@ -109,7 +109,8 @@ void ALdStairGenerator::AddStep(bool GenerateDecoration, UClass* Class)
 	FActorSpawnParameters spawnParams;
 	AStaticMeshActor* step = GetWorld()->SpawnActor<AStaticMeshActor>(Class, FVector(0, 0, CurrentHeight), FRotator(0, CurrentRotation - 90, 0), spawnParams);
 	step->SetMobility(EComponentMobility::Movable);
-	step->GetStaticMeshComponent()->SetStaticMesh(StepMesh);
+	if (GenerateDecoration) step->GetStaticMeshComponent()->SetStaticMesh(StepMesh);
+	else					step->GetStaticMeshComponent()->SetStaticMesh(EmptyStepMesh);
 	Steps.Add(step);
 
 	float walln = FMath::FRandRange(0, 1);

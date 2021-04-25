@@ -38,6 +38,8 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	UStaticMesh* StepMesh;
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+	UStaticMesh* EmptyStepMesh;
+	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	TMap<UStaticMesh*, float> WallMeshes;
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	TMap<UStaticMesh*, float> DecoMeshes;
