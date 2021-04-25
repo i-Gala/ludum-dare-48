@@ -22,13 +22,15 @@ void ALdStairGenerator::Start()
 
 bool ALdStairGenerator::UpdatePhase(int32 phase)
 {
+	bool success = false;
 	auto modules = StepModulesByPhase.Find(phase);
 	if (modules)
 	{
+		success = true;
 		FModulePhaseStruct module = *modules;
 		StepModules = module.StepModules;
 	}
-	return modules;
+	return success;
 }
 
 // Called when the game starts or when spawned
