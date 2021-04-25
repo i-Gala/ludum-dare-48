@@ -74,26 +74,30 @@ void ALdStairGenerator::GenerateStep(TCHAR currChar)
 		break;
 	case 'T':
 		{
-			if (Obstacles.Find("T"))
+			const auto obstacleClass = Obstacles.Find("T");
+			if (obstacleClass)
 			{
-				AddStep(StepMesh, true, *Obstacles.Find("T"));
+				AddStep(EmptyStepMesh, true); 
+				FActorSpawnParameters spawnParams;
+				FVector loc = Steps.Last()->GetActorLocation();
+				FRotator rot = Steps.Last()->GetActorRotation();
+				AActor* obstacle = GetWorld()->SpawnActor<AActor>(*obstacleClass, loc, rot, spawnParams);
 			}
 		}
 		break;
 	case 'H':
 		AddStep(EmptyStepMesh, false);
-// 		Steps.Last()->SetActorHiddenInGame(true);
-// 		Steps.Last()->SetActorEnableCollision(false);
 		break;
 	default:
 		{
 			AddStep(StepMesh);
-			if (Obstacles.Find(FName(&currChar)))
+			const auto obstacleClass = Obstacles.Find(FName(&currChar));
+			if (obstacleClass)
 			{
 				FActorSpawnParameters spawnParams;
 				FRotator rot = FRotator(0, CurrentRotation, 0);
 
-				AActor* obstacle = GetWorld()->SpawnActor<AActor>(*Obstacles.Find(FName(&currChar)), FVector(0, 0, CurrentHeight + StepHeight/2) + rot.Vector()* 600, rot, spawnParams);
+				AActor* obstacle = GetWorld()->SpawnActor<AActor>(*obstacleClass, FVector(0, 0, CurrentHeight + StepHeight/2) + rot.Vector()* 600, rot, spawnParams);
 			}
 			break;
 		}
