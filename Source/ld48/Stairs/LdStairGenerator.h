@@ -28,6 +28,8 @@ public:
 	virtual void Tick(float DeltaTime) override;
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+	FString FirstModule;
+	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	TArray<FString> StepModules;
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	float StepHeight = 80;
@@ -57,6 +59,7 @@ public:
 
 private:
 	void GenerateSteps();
+	void GenerateModule(FString Module);
 	void GenerateStep(TCHAR type);
 	void AddStep(UStaticMesh* mesh, bool generateDecoration = true, UClass* Class = AStaticMeshActor::StaticClass());
 
