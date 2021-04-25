@@ -8,7 +8,7 @@ ALdStairGenerator::ALdStairGenerator()
 {
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
-
+	FloorDistanceToDestroy = -500.f;
 }
 
 void ALdStairGenerator::Start()
@@ -28,9 +28,11 @@ void ALdStairGenerator::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 	if (!Camera) return;
-	float dist = FVector::Distance(Steps[0]->GetActorLocation(), Camera->GetActorLocation());
+	FVector stepLocation = Steps[0]->GetActorLocation();
+	FVector camLocation = Camera->GetActorLocation();
+	float dist = camLocation.Z - stepLocation.Z;
 
-	if (dist < 1000)
+	if (dist < FloorDistanceToDestroy)
 	{
 		TArray<AActor*> attached;
 		Steps[0]->GetAttachedActors(attached, true);
