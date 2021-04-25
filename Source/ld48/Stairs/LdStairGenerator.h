@@ -48,7 +48,7 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	AActor* Plane;
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
-	float FloorDistanceToDestroy = 1000;
+	float FloorDistanceToDestroy;
 
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere)
 	float CurrentHeight = 0;
