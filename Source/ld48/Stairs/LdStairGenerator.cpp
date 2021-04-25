@@ -70,24 +70,24 @@ void ALdStairGenerator::GenerateStep(TCHAR currChar)
 	switch (currChar)
 	{
 	case 'S':
-		AddStep();
+		AddStep(StepMesh);
 		break;
 	case 'T':
 		{
 			if (Obstacles.Find("T"))
 			{
-				AddStep(true, *Obstacles.Find("T"));
+				AddStep(StepMesh, true, *Obstacles.Find("T"));
 			}
 		}
 		break;
 	case 'H':
-		AddStep(false);
-		Steps.Last()->SetActorHiddenInGame(true);
-		Steps.Last()->SetActorEnableCollision(false);
+		AddStep(EmptyStepMesh, false);
+// 		Steps.Last()->SetActorHiddenInGame(true);
+// 		Steps.Last()->SetActorEnableCollision(false);
 		break;
 	default:
 		{
-			AddStep();
+			AddStep(StepMesh);
 			if (Obstacles.Find(FName(&currChar)))
 			{
 				FActorSpawnParameters spawnParams;
@@ -104,13 +104,12 @@ void ALdStairGenerator::GenerateStep(TCHAR currChar)
 
 }
 
-void ALdStairGenerator::AddStep(bool GenerateDecoration, UClass* Class)
+void ALdStairGenerator::AddStep(UStaticMesh* mesh, bool GenerateDecoration, UClass* Class)
 {
 	FActorSpawnParameters spawnParams;
 	AStaticMeshActor* step = GetWorld()->SpawnActor<AStaticMeshActor>(Class, FVector(0, 0, CurrentHeight), FRotator(0, CurrentRotation - 90, 0), spawnParams);
 	step->SetMobility(EComponentMobility::Movable);
-	if (GenerateDecoration) step->GetStaticMeshComponent()->SetStaticMesh(StepMesh);
-	else					step->GetStaticMeshComponent()->SetStaticMesh(EmptyStepMesh);
+	step->GetStaticMeshComponent()->SetStaticMesh(mesh);
 	Steps.Add(step);
 
 	float walln = FMath::FRandRange(0, 1);
