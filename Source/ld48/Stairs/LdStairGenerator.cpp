@@ -103,8 +103,8 @@ void ALdStairGenerator::GenerateStep(TCHAR currChar)
 			FRotator rot = Steps.Last()->GetActorRotation();
 			AActor* obstacle = GetWorld()->SpawnActor<AActor>(*obstacleClass, loc, rot, spawnParams);
 		}
+		break;
 	}
-	break;
 	case 'H':
 		AddStep(EmptyStepMesh, false);
 		break;
