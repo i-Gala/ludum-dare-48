@@ -72,7 +72,7 @@ public:
 private:
 	void GenerateSteps();
 	void GenerateModule(FString Module);
-	void GenerateStep(TCHAR type);
+	void GenerateStep(FString key);
 	void AddStep(UStaticMesh* mesh, bool generateDecoration = true, UClass* Class = AStaticMeshActor::StaticClass());
 
 	TArray<AStaticMeshActor*> Steps;
