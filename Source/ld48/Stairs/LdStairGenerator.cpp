@@ -13,8 +13,22 @@ ALdStairGenerator::ALdStairGenerator()
 
 void ALdStairGenerator::Start()
 {
-	GenerateModule(FirstModule);
-	GenerateSteps();
+	if (UpdatePhase(0))
+	{
+		GenerateModule(FirstModule);
+		GenerateSteps();
+	}
+}
+
+bool ALdStairGenerator::UpdatePhase(int32 phase)
+{
+	auto modules = StepModulesByPhase.Find(phase);
+	if (modules)
+	{
+		FModulePhaseStruct module = *modules;
+		StepModules = module.StepModules;
+	}
+	return modules;
 }
 
 // Called when the game starts or when spawned

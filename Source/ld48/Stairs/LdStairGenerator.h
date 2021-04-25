@@ -8,6 +8,16 @@
 #include "Engine/StaticMeshActor.h"
 #include "LdStairGenerator.generated.h"
 
+USTRUCT(BlueprintType)
+struct FModulePhaseStruct
+{
+	GENERATED_USTRUCT_BODY()
+
+public:
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	TArray<FString> StepModules;
+};
+
 UCLASS()
 class LD48_API ALdStairGenerator : public AActor
 {
@@ -19,6 +29,8 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	void Start();
+	UFUNCTION(BlueprintCallable)
+	bool UpdatePhase(int32 phase);
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -30,7 +42,7 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	FString FirstModule;
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
-	TArray<FString> StepModules;
+	TMap<int32, FModulePhaseStruct> StepModulesByPhase;
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	float StepHeight = 80;
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
@@ -65,5 +77,6 @@ private:
 
 	TArray<AStaticMeshActor*> Steps;
 	float CurrentRotation = 0;
+	TArray<FString> StepModules;
 
 };
