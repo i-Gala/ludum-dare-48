@@ -124,7 +124,6 @@ void ALdStairGenerator::GenerateStep(FString key)
 
 	CurrentHeight -= StepHeight;
 	CurrentRotation += 360.f/NumStepsPer360;
-
 }
 
 void ALdStairGenerator::AddStep(UStaticMesh* mesh, bool GenerateDecoration, UClass* Class)
